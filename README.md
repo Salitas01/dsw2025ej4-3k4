@@ -1,2 +1,6 @@
-# dsw2025ej4
-Desarrollo de Software - Ejercicio N° 4
+# Desarrollo de Software
+## Ejercicio N° 4
+
+- Salas Vallejo Facundo Raúl
+- Santillan Guiliano Fabrizio
+- Recalde Tomás
