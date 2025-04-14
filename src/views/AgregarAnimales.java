@@ -1,0 +1,444 @@
+
+package views;
+
+import data.Persistencia;
+import domain.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.InvalidPropertiesFormatException;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
+public class AgregarAnimales extends javax.swing.JFrame {
+
+    private ArrayList<Mamifero> listaAnimales = new ArrayList<>();
+    
+    public AgregarAnimales() {
+        initComponents();
+        setearModelos();
+        ComprobarSector();
+        
+        Especies_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ComprobarSector();
+            }
+        });
+    }
+    
+    public void GuardarAnimales() throws InvalidPropertiesFormatException, Exception{
+        int edad = Integer.parseInt(Edad_textField.getText());
+        double peso = Double.parseDouble(Peso_textField1.getText());
+        
+        String nombreEspecie = Especies_ComboBox.getSelectedItem().toString();
+        Especie especieSeleccionada = null;
+        for (Especie especie : Persistencia.getEspecies()) {
+            if (especie.getNombre().equals(nombreEspecie)) {
+                especieSeleccionada = especie;
+                break;
+            }
+        }
+        if (especieSeleccionada == null) {
+            throw new Exception("No se pudo encontrar la especie.");
+        }
+        
+        String sectorNombre = Sector_ComboBox.getSelectedItem().toString(); // Ej: "Sector 2"
+        int numeroSector = Integer.parseInt(sectorNombre.split(" ")[1]);
+        Sector sectorSeleccionado = null;
+        for (Sector sector : Persistencia.getSectores()) {
+            if (sector.getNumero() == numeroSector) {
+                sectorSeleccionado = sector;
+                break;
+            }
+        }
+        if (sectorSeleccionado == null) {
+            throw new Exception("No se pudo encontrar el sector.");
+        }
+        
+        String nombrePais = Pais_ComboBox.getSelectedItem().toString();
+        Pais paisSeleccionado = null;
+        for (Pais pais : Persistencia.getPaises()) {
+            if (pais.getNombre().equals(nombrePais)) {
+                paisSeleccionado = pais;
+                break;
+            }
+        }
+        if (paisSeleccionado == null) {
+            throw new Exception("No se pudo encontrar el país.");
+        }
+        
+        Mamifero nuevoAnmal;
+        
+        if (especieSeleccionada.getTipoAlimentacion().esHerbivoro()) {
+            double valorFijo = Double.parseDouble(valorFijo_textField.getText());
+            nuevoAnmal = new Herbivoro(edad, peso, especieSeleccionada, sectorSeleccionado, valorFijo, paisSeleccionado);
+        } else {
+            nuevoAnmal = new Carnivoro(edad, peso, especieSeleccionada, sectorSeleccionado, paisSeleccionado);
+        }
+
+        Persistencia.getAnimales().add(nuevoAnmal);
+        JOptionPane.showMessageDialog(this, "Animal guardado con éxito.");
+        this.dispose();
+        new MainMenu().setVisible(true);
+        
+        
+        
+    }
+    
+    private void ComprobarSector(){
+        String especieSeleccionada = (String) Especies_ComboBox.getSelectedItem();
+        if (especieSeleccionada == null) {
+            return;
+        }
+
+        for (Especie especie : Persistencia.getEspecies()) {
+            if (especie.getNombre().equals(especieSeleccionada)) {
+
+                if (especie.getTipoAlimentacion() == TipoAlimentacion.CARNIVORO) {
+                    valorFijo_textField.setText("0");
+                    valorFijo_textField.setEnabled(false);
+                } else {
+                    valorFijo_textField.setEnabled(true);
+                    valorFijo_textField.setText(""); // O podés dejar el valor anterior si preferís
+                }
+
+                break;
+            }
+        }
+    }
+    
+    private void setearModelos() {
+        
+        Especies_ComboBox.removeAllItems();
+        
+        for (Especie especie : Persistencia.getEspecies()) {
+            Especies_ComboBox.addItem(especie.getNombre());
+        }
+        
+        Pais_ComboBox.removeAllItems();
+        
+        for (Pais pais : Persistencia.getPaises()) {
+            Pais_ComboBox.addItem(pais.getNombre());
+        }
+        
+        Sector_ComboBox.removeAllItems();
+        
+        for (Sector sector : Persistencia.getSectores()) {
+            Sector_ComboBox.addItem("Sector[" + sector.getTipoAlimentacion() + "] " + sector.getNumero());
+        }
+}
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        e_Edad = new javax.swing.JLabel();
+        Edad_textField = new javax.swing.JTextField();
+        e_Peso = new javax.swing.JLabel();
+        Peso_textField1 = new javax.swing.JTextField();
+        e_Pais = new javax.swing.JLabel();
+        Especies_ComboBox = new javax.swing.JComboBox<>();
+        e_Edad2 = new javax.swing.JLabel();
+        Pais_ComboBox = new javax.swing.JComboBox<>();
+        Sector_ComboBox = new javax.swing.JComboBox<>();
+        e_Sector = new javax.swing.JLabel();
+        e_Edad4 = new javax.swing.JLabel();
+        b_Agregar = new javax.swing.JButton();
+        VolverMain = new javax.swing.JButton();
+        valorFijo_textField = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Zoologico - Agregar Animales");
+
+        e_Edad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        e_Edad.setText("Edad:");
+
+        Edad_textField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Edad_textFieldActionPerformed(evt);
+            }
+        });
+
+        e_Peso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        e_Peso.setText("Peso:");
+
+        Peso_textField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Peso_textField1ActionPerformed(evt);
+            }
+        });
+
+        e_Pais.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        e_Pais.setText("Pais");
+
+        Especies_ComboBox.setToolTipText("");
+        Especies_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Especies_ComboBoxActionPerformed(evt);
+            }
+        });
+
+        e_Edad2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        e_Edad2.setText("Especie");
+
+        Pais_ComboBox.setToolTipText("");
+        Pais_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Pais_ComboBoxActionPerformed(evt);
+            }
+        });
+
+        Sector_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Sector_ComboBoxActionPerformed(evt);
+            }
+        });
+
+        e_Sector.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        e_Sector.setText("Sector");
+
+        e_Edad4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        e_Edad4.setText("Valor Fijo:");
+
+        b_Agregar.setText("Agregar");
+        b_Agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_AgregarActionPerformed(evt);
+            }
+        });
+
+        VolverMain.setText("Volver");
+        VolverMain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VolverMainActionPerformed(evt);
+            }
+        });
+
+        valorFijo_textField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valorFijo_textFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(e_Peso, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Peso_textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(e_Pais, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(79, 79, 79))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(83, 83, 83)
+                                .addComponent(Pais_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(28, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(e_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Edad_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(Especies_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(e_Edad2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(80, 80, 80))))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(e_Sector, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(Sector_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(e_Edad4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(valorFijo_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(VolverMain, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(b_Agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Edad_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(e_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(13, 13, 13))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(e_Edad2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Especies_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(e_Peso, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Peso_textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(e_Pais, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Pais_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(e_Sector, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(e_Edad4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Sector_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(valorFijo_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(b_Agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(VolverMain, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void Edad_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Edad_textFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Edad_textFieldActionPerformed
+
+    private void Peso_textField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Peso_textField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Peso_textField1ActionPerformed
+
+    private void b_AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_AgregarActionPerformed
+        
+        try {
+            GuardarAnimales();
+        } catch (InvalidPropertiesFormatException ex) {
+            Logger.getLogger(AgregarAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AgregarAnimales.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        Edad_textField.setText("");
+        Peso_textField1.setText("");
+        Especies_ComboBox.setSelectedIndex(0);
+    }//GEN-LAST:event_b_AgregarActionPerformed
+
+    private void VolverMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverMainActionPerformed
+        MainMenu agregar = new MainMenu();
+        agregar.setVisible(true);
+        
+        this.setVisible(false); // Solo la oculta
+    }//GEN-LAST:event_VolverMainActionPerformed
+
+    private void Pais_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Pais_ComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Pais_ComboBoxActionPerformed
+
+    private void Sector_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sector_ComboBoxActionPerformed
+        
+    }//GEN-LAST:event_Sector_ComboBoxActionPerformed
+
+    private void Especies_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Especies_ComboBoxActionPerformed
+    /*ArrayList<AnimalViewModel> animales = Controlador.getAnimales();
+    String seleccionado = (String) Especies_ComboBox.getSelectedItem();
+    Set<String> sectores = new HashSet<>();
+
+    if (seleccionado.equals("León")) {
+        for (AnimalViewModel animal : animales){
+            sectores.add(animal.getSector());
+        }
+        
+        Sector_ComboBox.setModel(new DefaultComboBoxModel<>(sectores.toArray(new String[0])));
+        
+    } else if (seleccionado.equals("Elefante")) {
+        System.out.println("¡El elefante trompetea! 🐘");
+    }*/
+
+
+    }//GEN-LAST:event_Especies_ComboBoxActionPerformed
+
+    private void valorFijo_textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorFijo_textFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_valorFijo_textFieldActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AgregarAnimales.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AgregarAnimales.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AgregarAnimales.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AgregarAnimales.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AgregarAnimales().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Edad_textField;
+    private javax.swing.JComboBox<String> Especies_ComboBox;
+    private javax.swing.JComboBox<String> Pais_ComboBox;
+    private javax.swing.JTextField Peso_textField1;
+    private javax.swing.JComboBox<String> Sector_ComboBox;
+    private javax.swing.JButton VolverMain;
+    private javax.swing.JButton b_Agregar;
+    private javax.swing.JLabel e_Edad;
+    private javax.swing.JLabel e_Edad2;
+    private javax.swing.JLabel e_Edad4;
+    private javax.swing.JLabel e_Pais;
+    private javax.swing.JLabel e_Peso;
+    private javax.swing.JLabel e_Sector;
+    private javax.swing.JTextField valorFijo_textField;
+    // End of variables declaration//GEN-END:variables
+}
