@@ -17,6 +17,7 @@ public class ListarAnimalesView extends javax.swing.JFrame {
      * Creates new form ListarAnimalesView
      */
     public ListarAnimalesView() {
+        setLocationRelativeTo(null);
         initComponents();
         listarAnimales();
     }
@@ -54,6 +55,7 @@ public class ListarAnimalesView extends javax.swing.JFrame {
         totalCarnivoros = new javax.swing.JLabel();
         totalLabel = new javax.swing.JLabel();
         totalAlimentos = new javax.swing.JLabel();
+        VolverMain = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Zoológico - Listar Animales");
@@ -112,13 +114,13 @@ public class ListarAnimalesView extends javax.swing.JFrame {
                     .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(totalHerbivoros, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)))
+                        .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap(48, Short.MAX_VALUE)
                 .addComponent(totalHerbivoros)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(totalCarnivoros)
@@ -129,6 +131,13 @@ public class ListarAnimalesView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(totalAlimentos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        VolverMain.setText("Volver");
+        VolverMain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VolverMainActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,7 +150,10 @@ public class ListarAnimalesView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(calcularComida, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(VolverMain, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(507, 507, 507)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -149,12 +161,14 @@ public class ListarAnimalesView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addComponent(calcularComida, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)))
+                        .addGap(10, 10, 10)
+                        .addComponent(VolverMain, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -167,6 +181,14 @@ public class ListarAnimalesView extends javax.swing.JFrame {
          totalCarnivoros.setText(String.format("Total Carnívoros: %.2f%n Kgs.", comida.getCarnivoros()));
          totalAlimentos.setText(String.format("%.2f%n Kgs.", comida.getTotal()));
     }//GEN-LAST:event_calcularComidaActionPerformed
+
+    private void VolverMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverMainActionPerformed
+    MainMenu agregar = new MainMenu();
+    agregar.setVisible(true);
+
+    this.dispose(); // Cierra la ventana actual
+    this.setVisible(false); // Solo la oculta
+    }//GEN-LAST:event_VolverMainActionPerformed
 
     /**
      * @param args the command line arguments
@@ -204,6 +226,7 @@ public class ListarAnimalesView extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton VolverMain;
     private javax.swing.JTable animalesGrid;
     private javax.swing.JButton calcularComida;
     private javax.swing.JScrollPane jScrollPane1;

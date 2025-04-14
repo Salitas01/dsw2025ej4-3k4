@@ -16,4 +16,8 @@ public class Pais {
     public String getCodigoIso() {
         return codigoIso;
     }
+
+    public String getPais() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

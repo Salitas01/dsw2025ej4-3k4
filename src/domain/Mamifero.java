@@ -42,6 +42,11 @@ public abstract class Mamifero {
     public Sector getSector() {
         return sector;
     }
+    
+    public Pais getPais() {
+        return pais;
+    }
+    
     public TipoAlimentacion getTipoAlimentacion(){
         return tipoAlimentacion;
     }
