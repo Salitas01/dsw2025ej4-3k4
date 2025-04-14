@@ -1,4 +1,4 @@
-
+ 
 package views;
 
 import domain.Carnivoro;
@@ -12,6 +12,7 @@ public class AnimalViewModel{
     private int edad;
     private String sector;
     private double peso;
+    private String pais;
     private double valorFijo;
     private double porcentaje;
 
@@ -21,6 +22,7 @@ public class AnimalViewModel{
         edad = animal.getEdad();
         sector = animal.getSector().toString();
         peso = animal.getPeso();
+        pais = animal.getPais().toString();
         valorFijo = animal instanceof Herbivoro ? ((Herbivoro) animal).getValorFijo() : 0;
         porcentaje = animal instanceof Carnivoro ? animal.getEspecie().getPorcentajePesoCarnivoro() : 0;
     }
@@ -47,5 +49,9 @@ public class AnimalViewModel{
     
     public double getPorcentaje(){
         return porcentaje;
+    }
+
+    public String getPais() {
+        return pais;
     }
 }

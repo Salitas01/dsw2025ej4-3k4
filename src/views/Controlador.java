@@ -18,6 +18,10 @@ public class Controlador {
         return Persistencia.getSectores();
     }
     
+    public static ArrayList<Pais> getPais(){
+        return Persistencia.getPaises();
+    }
+    
     public static ArrayList<AnimalViewModel> getAnimales(){
         ArrayList<AnimalViewModel> animales = new ArrayList<>();
         for(Mamifero animal : Persistencia.getAnimales()){
@@ -30,5 +34,9 @@ public class Controlador {
         double totalCarnivoros = Persistencia.getTotalComida(TipoAlimentacion.CARNIVORO);
         double totalHerbivoros = Persistencia.getTotalComida(TipoAlimentacion.HERBIVORO);
         return new ComidaViewModel(totalCarnivoros, totalHerbivoros);
+    }
+
+    static void agregarAnimal(Mamifero nuevoMamifero, Object selectedItem) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
